@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   grafana:
-    container_name: ${PROJECT:-centralised-logs-and-visualisation-}grafana
+    container_name: ${PROJECT:-centralised-logging-and-visualisations-}grafana
     image: grafana/grafana:latest-ubuntu
     ports:
       - '3000:3000'
@@ -11,7 +11,7 @@ services:
       - loki
 
   loki:
-    container_name: ${PROJECT:-centralised-logs-and-visualisation-}loki
+    container_name: ${PROJECT:-centralised-logging-and-visualisations-}loki
     image: grafana/loki:latest
     ports:
       - '3100:3100'
@@ -22,8 +22,8 @@ services:
     restart: on-failure
 
   app:
-    container_name: ${PROJECT:-centralised-logs-and-visualisation-}app
-    image: blog.mariossimou.dev/centralised-logs-and-visualisation-app:latest
+    container_name: ${PROJECT:-centralised-logging-and-visualisations-}app
+    image: blog.mariossimou.dev/centralised-logging-and-visualisations-app:latest
     build:
       context: ./services/app
       dockerfile: ./deployments/app.dockerfile
