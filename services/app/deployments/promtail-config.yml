@@ -1,0 +1,17 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /var/log/positions.yaml
+
+client:
+  url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - labels:
+          job: logs
+          service: app
+          __path__: /go/src/app/*.log

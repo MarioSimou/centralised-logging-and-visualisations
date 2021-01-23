@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  grafana:
+    container_name: ${PROJECT:-centralised-logs-and-visualisation-}grafana
+    image: grafana/grafana:latest-ubuntu
+    ports:
+      - '3000:3000'
+    restart: on-failure
+    depends_on:
+      - loki
+
+  loki:
+    container_name: ${PROJECT:-centralised-logs-and-visualisation-}loki
+    image: grafana/loki:latest
+    ports:
+      - '3100:3100'
+    volumes:
+      - type: bind
+        source: $PWD/loki-config.yaml
+        target: /etc/loki/local-config.yaml
+    restart: on-failure
+
+  app:
+    container_name: ${PROJECT:-centralised-logs-and-visualisation-}app
+    image: blog.mariossimou.dev/centralised-logs-and-visualisation-app:latest
+    build:
+      context: ./services/app
+      dockerfile: ./deployments/app.dockerfile
+    privileged: true
+    ports:
+      - '8080:8080'
+    restart: on-failure
+    depends_on:
+      - loki
+      - grafana
